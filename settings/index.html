@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+	<head>
+		
+	</head>
+	<body>
+
+		<h1>Presence</h1>
+		
+		<p>On this page you can specify the Bluetooth LE token IDs for which triggers apply. If no IDs are specified the triggers will be executed on any token.</p>
+		
+		<fieldset>
+			<legend>Presence settings</legend>
+			
+			<div class="field row">
+				<label for="tokens">Tokens</label>
+				<textarea id="tokens"></textarea>
+			</div>
+			
+		</fieldset>
+		
+		<button class="right">Save changes</button>
+		
+		<script type="text/javascript">
+		function onHomeyReady(){
+			Homey.ready()
+		}
+		</script>
+		
+	</body>
+</html>

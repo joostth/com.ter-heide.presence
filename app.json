@@ -1,0 +1,68 @@
+{
+  "id": "com.ter-heide.presence",
+  "version": "1.0.0",
+  "name": {
+    "en": "Presence!",
+    "nl": "Present!"
+  },
+  "description": {
+    "en": "This app checks your presence based on a Bluetooth LE token",
+    "nl": "Deze app houdt uw aanwezigheid bij op basis an een Bluetooth LE token"
+  },
+  "author": {
+    "name": "Joost ter Heide",
+    "email": "joost@ter-heide.com"
+  },
+  "dependencies": {
+    "socket.io": "^1.3.5",
+    "bleacon": "^0.2.0"
+  },
+  "permissions": [
+    "homey:manager:flow"
+  ],
+  "speech": [],
+  "flow": {
+    "triggers": [
+      {
+        "method": "arriving",
+        "title": {
+          "en": "When `arriving`",
+          "nl": "Als `arriveert`"
+        },
+        "args": [
+          {
+            "name": "guid",
+            "type": "text",
+            "placeholder": {}
+          }
+        ]
+      },
+      {
+        "method": "leaving",
+        "title": {
+          "en": "When `leaving`",
+          "nl": "Als `vertrekt`"
+        },
+        "args": [
+          {
+            "name": "guid",
+            "type": "text",
+            "placeholder": {}
+          }
+        ]
+      },
+      {
+        "method": "empty",
+        "title": {
+          "en": "When 'empty'"
+        }
+      },
+      {
+        "method": "first",
+        "title": {
+          "en": "When 'first'"
+        }
+      }
+    ]
+  }
+}
