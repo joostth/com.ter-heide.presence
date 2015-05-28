@@ -19,11 +19,15 @@
 			
 		</fieldset>
 		
-		<button class="right">Save changes</button>
+		<button class="right" onclick="save();">Save changes</button>
 		
 		<script type="text/javascript">
 		function onHomeyReady(){
 			Homey.ready()
+		}
+		
+		function save(){
+			Homey.settings.tokens = document.getElementById('tokens').value;
 		}
 		</script>
 		
