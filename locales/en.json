@@ -1,0 +1,12 @@
+{
+    "Arriving": "Arriving",
+	"Leaving": "Leaving",
+	"Reader registered": "Reader registered",
+	"with name": "with name",
+    "settings": {
+        "name": "Presence!",
+        "description": "On this page you can specify the Bluetooth LE token IDs for which triggers apply. If no IDs are specified the triggers will be executed on any token.",
+		"presence-settings": "Presence settings",
+		"save-changes": "Save changes"
+    }
+}

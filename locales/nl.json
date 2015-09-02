@@ -1,0 +1,12 @@
+{
+    "Arriving": "Arriveert",
+	"Leaving": "Vertrekt",
+	"Reader registered": "Lezer geregistreerd",
+	"with name": "met naam",
+    "settings": {
+        "name": "Present!",
+        "description": "Op deze pagina kun je Bluetooth LE token IDs specificeren waarvoor de triggers van toepassing zijn. Wanneer er geen IDs zijn opgegeven worden de triggers uitgevoerd bij iedere token.",
+		"presence-settings": "Present instellingen",
+		"save-changes": "Wijzigingen opslaan"
+    }
+}

@@ -5,12 +5,12 @@
 	</head>
 	<body>
 
-		<h1>Presence</h1>
+		<h1 data-i18n="name"><!--Presence--></h1>
 		
-		<p>On this page you can specify the Bluetooth LE token IDs for which triggers apply. If no IDs are specified the triggers will be executed on any token.</p>
+		<p data-i18n="description"><!--On this page you can specify the Bluetooth LE token IDs for which triggers apply. If no IDs are specified the triggers will be executed on any token.--></p>
 		
 		<fieldset>
-			<legend>Presence settings</legend>
+			<legend data-i18n="presence-settings"><!--Presence settings--></legend>
 			
 			<div class="field row">
 				<label for="tokens">Tokens</label>
@@ -19,7 +19,7 @@
 			
 		</fieldset>
 		
-		<button class="right" onclick="save();">Save changes</button>
+		<button class="right" onclick="save();" data-i18n="save-changes"><!--Save changes--></button>
 		
 		<script type="text/javascript">
 		function onHomeyReady(){

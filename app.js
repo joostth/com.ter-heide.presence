@@ -8,11 +8,7 @@ var ibeaconCache = []
   , token_filter = []
   , empty = true;
 
-function App() {
-	
-}
-
-module.exports = App;
+var self = module.exports;
 
 function getTokenFilter() {
   try {
@@ -22,44 +18,44 @@ function getTokenFilter() {
   }
 }
 
-App.prototype.init = function() {
-  ibeaconCache = [];
-  token_filter = getTokenFilter() || token_filter;
-  empty = true;
-  
-  ibeaconCache.findById = function(guid) {
+module.exports.init = function() {
+	ibeaconCache = [];
+	token_filter = getTokenFilter() || token_filter;
+	empty = true;
+
+	ibeaconCache.findById = function(guid) {
 		for(var i=0; i<this.length; i++) {
 			if(this[i].guid === guid) {
-			return this[i];
+				return this[i];
 			}
 		}
 		return false
-  };
-  
-  ibeaconCache.seen = function(guid) {
+	};
+
+	ibeaconCache.seen = function(guid) {
 		for(var i=0; i<this.length; i++) {
 			if(this[i].guid === guid) {
 				this[i].lastseen = new Date();
 			}
 		}
 		return false
-  };
-  
-  ibeaconCache.arrive = function(guid) {
-  	this.push({guid: guid, lastseen: new Date()});
-  };
-  
-  ibeaconCache.check = function() {
+	};
+
+	ibeaconCache.arrive = function(guid) {
+		this.push({guid: guid, lastseen: new Date()});
+	};
+
+	ibeaconCache.check = function() {
 		var now = new Date();
 		//checking which devices are left
 		for(var i=ibeaconCache.length - 1; i>=0; i--) {
 			//check if the time the token was last seen exceeds the threshold
 			if(ibeaconCache[i].lastseen.getTime() + (config.leaveInterval * config.leavePolls) < now.getTime()) {
 				//leaving
-				Homey.log((new Date()).toLocaleTimeString() + ": " + "Leaving: " + ibeaconCache[i].guid);
+				Homey.log((new Date()).toLocaleTimeString() + ": " + __("Leaving") + ": " + ibeaconCache[i].guid);
 
 				io.sockets.emit('leaving', ibeaconCache[i].guid);
-				
+
 				Homey.manager('flow').trigger('leaving', {
 					'guid': ibeaconCache[i].guid
 				});
@@ -70,14 +66,14 @@ App.prototype.init = function() {
 
 		if(ibeaconCache.length == 0 && !empty) {
 			io.sockets.emit('empty');
-			
+
 			Homey.manager('flow').trigger('empty', {});
-			
+
 			empty = true;
 		}
-  };
-  
-  ibeaconCache.discovered = function(guid, reader) {
+	};
+
+	ibeaconCache.discovered = function(guid, reader) {
 		//check if there is a filter and if so if the guid is in the filter
 		if(token_filter.length == 0 || token_filter.indexOf(guid) !== -1) {
 			Homey.log((new Date()).toLocaleTimeString() + ": " + guid);
@@ -86,37 +82,39 @@ App.prototype.init = function() {
 
 			var dev = ibeaconCache.findById(guid);
 
-			if ( !!dev ) { 
-			//already there
-			ibeaconCache.seen(dev.guid);
+			if ( !!dev ) {
+				//already there
+				ibeaconCache.seen(dev.guid);
 			} else {
-			//arriving
-			ibeaconCache.arrive(guid);
-			Homey.log((new Date()).toLocaleTimeString() + ": " + "Arriving: " + guid);
+				//arriving
+				ibeaconCache.arrive(guid);
+				Homey.log((new Date()).toLocaleTimeString() + ": " + __("Arriving") + ": " + guid);
 
-			if(ibeaconCache.length == 1) {
-				io.sockets.emit('first', guid);
+				if(ibeaconCache.length == 1) {
+					io.sockets.emit('first', guid);
 
-				Homey.manager('flow').trigger('first', {});
-			}
-			io.sockets.emit('arriving', guid);
+					Homey.manager('flow').trigger('first', {
+						'guid': guid
+					});
+				}
+				io.sockets.emit('arriving', guid);
 
-			Homey.manager('flow').trigger('arriving', {
-				'guid': ibeaconCache[i].guid
-			});
+				Homey.manager('flow').trigger('arriving', {
+					'guid': guid
+				});
 			}
 
 			empty = false;
 		}
 
-  };
-	
-  setInterval(ibeaconCache.check, config.leaveInterval);
+	};
 
-  io.on('connection', function(socket){
+	setInterval(ibeaconCache.check, config.leaveInterval);
+
+	io.on('connection', function(socket){
 
 		socket.on('register', function(name){
-			Homey.log('Reader registered with name: ' + name);
+			Homey.log(__('Reader registered') + ' ' + __('with name') + ': ' + name);
 			socket.readerName = name;
 		});
 
@@ -128,19 +126,34 @@ App.prototype.init = function() {
 		socket.on('disconnect', function(){
 		});
 
-  });
-  
-  Bleacon.on('discover', function(bleacon) {
+	});
+
+	Bleacon.on('discover', function(bleacon) {
 		var guid = bleacon.uuid + bleacon.major + bleacon.minor;
 		Homey.log ( (new Date()).toLocaleTimeString() + ": " + guid + ":" + bleacon.uuid + "," + bleacon.major + "," +  bleacon.minor );
 
 		ibeaconCache.discovered(guid, 'homey');
-  });//end on discover
-
-  console.log('Listening for readers on port ' + config.socket_port);
+	});//end on discover
+	
+	Homey.manager('flow').on('condition.present', function( args, callback ){
+		var result = ibeaconCache.length > 0;
+		callback( result );
+	});
+	
+	Homey.manager('flow').on('condition.is_present', function( args, callback ){
+		var result = !!ibeaconCache.findById(args.who);
+		callback( result );
+	});
+	
+	Homey.manager('flow').on('condition.amount_present', function( args, callback ){
+		var result = ibeaconCache.length >= args.amount;
+		callback( result );
+	});
+	
+	console.log('Listening for readers on port ' + config.socket_port);
 };
 
-App.prototype.who = function(){
+module.exports.who = function(){
 	var who=[];
 	for(var i=0; i<ibeaconCache.length; i++) {
 		who.push(!!ibeaconCache[i].name ? ibeaconCache[i].name : ibeaconCache[i].guid);

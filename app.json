@@ -7,7 +7,7 @@
   },
   "description": {
     "en": "This app checks your presence based on a Bluetooth LE token",
-    "nl": "Deze app houdt uw aanwezigheid bij op basis an een Bluetooth LE token"
+    "nl": "Deze app houdt uw aanwezigheid bij op basis van een Bluetooth LE token"
   },
   "author": {
     "name": "Joost ter Heide",
@@ -54,15 +54,67 @@
       {
         "method": "empty",
         "title": {
-          "en": "When 'empty'"
+          "en": "When 'empty'",
+          "nl": "Als `leeg`"
         }
       },
       {
         "method": "first",
         "title": {
-          "en": "When 'first'"
-        }
+          "en": "When 'first'",
+          "nl": "Als `eerste`"
+        },
+        "args": [
+          {
+            "name": "guid",
+            "type": "text",
+            "placeholder": {}
+          }
+        ]
       }
+    ],
+    "conditions": [
+        {
+            "id": "present",
+            "title": {
+                "en": "Anyone present...",
+								"nl": "Iemand aanwezig..."
+            }
+        },
+        {
+            "id": "is_present",
+            "title": {
+                "en": "Is someone present...",
+								"nl": "Is iemand aanwezig..."
+            },
+            "args": [
+                {
+                    "name": "who",
+                    "type": "text",
+										"placeholder": {
+												"en": "Who?", 
+												"nl": "Wie?"
+										}
+                }
+            ]
+        },
+        {
+            "id": "amount_present",
+            "title": {
+                "en": "Are so many present...",
+								"nl": "Zijn zoveel aanwezig..."
+            },
+            "args": [
+                {
+                    "name": "amount",
+                    "type": "number",
+										"placeholder": {
+												"en": "Amount", 
+												"nl": "Aantal"
+										}
+                }
+            ]
+        }
     ]
   }
 }
